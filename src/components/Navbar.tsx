@@ -80,7 +80,7 @@ export default function Navbar() {
           
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4 md:gap-8">
           <AnimatePresence mode="wait">
             {!isLoggedIn ? (
               <motion.div key="guest" className="flex items-center gap-3">
