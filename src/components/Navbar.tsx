@@ -250,7 +250,7 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMenuOpen(false)}
-              className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-[60] md:hidden"
+              className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-60 md:hidden"
             />
             {/* لوحة القائمة */}
             <motion.div 
@@ -258,7 +258,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 left-0 bottom-0 w-[280px] bg-white shadow-2xl z-[70] md:hidden p-6 pt-24"
+              className="fixed top-0 left-0 bottom-0 w-280px bg-white shadow-2xl z-70 md:hidden p-6 pt-24"
             >
               <div className="flex flex-col gap-6">
                 <Link href="/" className={`text-lg font-bold ${pathname === '/' ? 'text-indigo-600' : 'text-slate-600'}`}>
