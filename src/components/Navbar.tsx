@@ -60,7 +60,7 @@ export default function Navbar() {
                 {!isMenuOpen && <line x1="3" y1="18" x2="21" y2="18" />}
               </svg>
             </button>
-            <Link href="/" className="text-lg md:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent shrink-0">
+            <Link href="/" className="text-lg md:text-2xl font-bold  bg-linear-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent shrink-0">
               Tasks
             </Link>
           </div>
@@ -132,7 +132,7 @@ export default function Navbar() {
         {isMenuOpen && (
           <>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsMenuOpen(false)} className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-60 md:hidden" />
-            <motion.div initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} className="fixed top-0 left-0 bottom-0 w-[280px] bg-white shadow-2xl z-[70] md:hidden p-6 pt-24">
+            <motion.div initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} className="fixed top-0 left-0 bottom-0 w-70 bg-white shadow-2xl z-70 md:hidden p-6 pt-24">
               {isLoggedIn && (
                 <div className="flex items-center gap-3 mb-8 p-4 bg-slate-50 rounded-2xl">
                   <img src={user?.userImage || 'https://flaticon.com'} className="w-12 h-12 rounded-full border-2 border-white shadow-sm" alt="Profile" />
