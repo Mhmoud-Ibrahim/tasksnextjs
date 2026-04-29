@@ -25,7 +25,7 @@ export default function RegisterPage() {
   // دالة التسجيل بجوجل
   const handleGoogleLogin = () => {
     // التوجه لرابط الباك اند الذي يشغل Google OAuth
-    window.location.href = "https://taskts.vercel.app/auth/google";
+    window.location.href = "https://taskts.vercel.app/auth/google/callback";
   };
 
   return (
