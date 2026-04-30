@@ -22,7 +22,7 @@ export default function LoginPage() {
 
     // دالة الدخول بجوجل
     const handleGoogleLogin = () => {
-        window.location.href = "https://taskts.vercel.app/auth/google/callback";
+        window.location.href = "https://taskts.vercel.app/auth/google";
     };
 
     return (
