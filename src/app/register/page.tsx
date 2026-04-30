@@ -22,7 +22,7 @@ const RegisterSchema = Yup.object().shape({
 export default function RegisterPage() {
   const router = useRouter();
   const handleGoogleLogin = () => {
-    window.location.href = "https://taskts.vercel.app/auth/google/callback";
+     window.location.href = "https://taskts.vercel.app/auth/google";
   };
 
   return (
