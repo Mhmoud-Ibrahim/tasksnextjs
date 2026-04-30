@@ -21,10 +21,7 @@ const RegisterSchema = Yup.object().shape({
 
 export default function RegisterPage() {
   const router = useRouter();
-
-  // دالة التسجيل بجوجل
   const handleGoogleLogin = () => {
-    // التوجه لرابط الباك اند الذي يشغل Google OAuth
     window.location.href = "https://taskts.vercel.app/auth/google/callback";
   };
 
@@ -46,7 +43,7 @@ export default function RegisterPage() {
           validationSchema={RegisterSchema}
           onSubmit={async (values, { setSubmitting, setStatus }) => {
             try {
-              const response = await api.post('/signup', values);
+              const response = await api.post('/auth/signup', values);
               if (response.status === 200 || response.status === 201) {
                 router.push('/login');
               }

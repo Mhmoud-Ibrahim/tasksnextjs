@@ -22,7 +22,7 @@ export default function LoginPage() {
 
     // دالة الدخول بجوجل
     const handleGoogleLogin = () => {
-        window.location.href = "https://taskts.vercel.app/auth/google";
+        window.location.href = "https://taskts.vercel.app/auth/google/callback";
     };
 
     return (
@@ -44,7 +44,7 @@ export default function LoginPage() {
                     validationSchema={LoginSchema}
                     onSubmit={async (values, { setSubmitting, setStatus }) => {
                         try {
-                            const response = await api.post('/signin', values);
+                            const response = await api.post('/auth/signin', values);
 
                             if (response.data.message === 'success') {
                                 localStorage.setItem('is_auth', 'true');
