@@ -34,8 +34,8 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         {/* تغليف التطبيق بالكامل لتمكين التحقق من المستخدم في كل الصفحات */}
-        <AuthProvider>
           <Navbar />
+        <AuthProvider>
           <Toaster position="top-center" reverseOrder={false} />
           <main className="min-h-screen pt-20"> 
             {children}
