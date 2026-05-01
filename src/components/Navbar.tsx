@@ -5,46 +5,26 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Cookies from 'js-cookie';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState<{ name?: string; userImage?: string } | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // قائمة المستخدم المصغرة
 
-  const checkAuth = () => {
-    const auth = localStorage.getItem('is_auth');
-    const userData = localStorage.getItem('user_data'); // نفترض أنك تخزن بيانات المستخدم هنا
-    setIsLoggedIn(!!auth);
-    if (userData) setUser(JSON.parse(userData));
-  };
-
-  useEffect(() => {
-    setMounted(true);
-    checkAuth();
-    window.addEventListener('authChange', checkAuth);
-    return () => window.removeEventListener('authChange', checkAuth);
-  }, [pathname]);
 
   useEffect(() => {
     setIsMenuOpen(false);
     setIsUserMenuOpen(false);
   }, [pathname]);
 
-  const handleLogout = () => {
-    Cookies.remove('task_token');
-    localStorage.removeItem('is_auth');
-    localStorage.removeItem('user_data');
-    setIsLoggedIn(false);
-    setUser(null);
-    router.push('/login');
-    router.refresh();
-  };
-
+const { user, loading, logout } = useAuth();
+ if (loading) return <div>جاري التحميل...</div>;
+  if (!user) return <div>يجب تسجيل الدخول!</div>;
   if (!mounted) return <div className="h-20 bg-white border-b border-slate-100" />;
 
   return (
@@ -89,11 +69,12 @@ export default function Navbar() {
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                     className="flex items-center gap-2 p-1 hover:bg-slate-100 rounded-full transition-all"
                   >
-                    <img 
+                    {user? <img 
                       src={user?.userImage || 'https://flaticon.com'} 
                       alt="User" 
                       className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-indigo-100 object-cover"
-                    />
+                    />:""}
+                   
                     <svg className={`w-4 h-4 text-slate-500 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                   </button>
 
@@ -111,7 +92,7 @@ export default function Navbar() {
                           <p className="text-sm font-bold text-slate-700 truncate">{user?.name || 'User'}</p>
                         </div>
                         <button 
-                          onClick={handleLogout}
+                          onClick={logout}
                           className="w-full text-left px-4 py-2 text-sm text-red-500 font-bold hover:bg-red-50 transition-colors flex items-center gap-2"
                         >
                           <svg xmlns="http://w3.org" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
@@ -148,7 +129,7 @@ export default function Navbar() {
                   <>
                     <Link href="/tasks" className="text-lg font-bold text-slate-600">Tasks</Link>
                     <Link href="/addTask" className="text-lg font-bold text-slate-600">Add Task</Link>
-                    <button onClick={handleLogout} className="text-lg font-bold text-red-500 text-left mt-4">Logout</button>
+                    <button onClick={logout} className="text-lg font-bold text-red-500 text-left mt-4">Logout</button>
                   </>
                 )}
               </div>
