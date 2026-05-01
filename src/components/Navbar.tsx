@@ -82,8 +82,11 @@ export default function Navbar() {
                     className="flex items-center gap-2 p-1 hover:bg-slate-100 rounded-full transition-all"
                   >
                     <img 
-                      src={user?.userImage || 'https://ui-avatars.com' + user?.name} 
-                      alt="User" 
+                      src={user?.userImage} 
+                      
+                      loading="lazy"
+                  alt="Profile"
+                  referrerPolicy="no-referrer"
                       className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-indigo-100 object-cover"
                     />
                     <svg className={`w-4 h-4 text-slate-500 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,7 +136,7 @@ export default function Navbar() {
                   loading="lazy"
                   alt="Profile"
                   referrerPolicy="no-referrer"
-                  className="w-12 h-12 rounded-full border-2 border-white shadow-sm" alt="Profile" />
+                  className="w-12 h-12 rounded-full border-2 border-white shadow-sm" />
                   <div className="overflow-hidden">
                     <p className="font-bold text-slate-800 truncate">{user?.name}</p>
                     <p className="text-xs text-slate-500">Active Account</p>
