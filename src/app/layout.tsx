@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-// import "./globals.css";
-
+import { Geist, Geist_Mono } from "next/font/google"; // تم تعديل المسار ليتناسب مع الصورة (الرجوع لمجلد src)
+import "@/globals.css";
 import { Toaster } from 'react-hot-toast';
 import Navbar from "../components/Navbar";
-// استيراد الـ AuthProvider (تأكد أن المسار صحيح كما أنشأت المجلد)
+// استيراد الـ AuthProvider من المجلد الذي أنشأته
 import { AuthProvider } from "../context/AuthContext"; 
 
 const geistSans = Geist({
@@ -33,7 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased transition-colors duration-300`}
         suppressHydrationWarning
       >
-        {/* تغليف التطبيق بالـ AuthProvider ليتمكن من جلب بيانات المستخدم في كل الصفحات */}
+        {/* تغليف التطبيق بالكامل لتمكين التحقق من المستخدم في كل الصفحات */}
         <AuthProvider>
           <Navbar />
           <Toaster position="top-center" reverseOrder={false} />
