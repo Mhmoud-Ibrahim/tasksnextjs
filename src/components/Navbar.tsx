@@ -22,9 +22,8 @@ export default function Navbar() {
     setIsUserMenuOpen(false);
   }, [pathname]);
 
-const { user, loading, logout } = useAuth();
- if (loading) return <div>جاري التحميل...</div>;
-  if (!user) return <div>يجب تسجيل الدخول!</div>;
+const { user, logout } = useAuth();
+
   if (!mounted) return <div className="h-20 bg-white border-b border-slate-100" />;
 
   return (
