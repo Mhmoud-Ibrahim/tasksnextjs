@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google"; // تم تعديل المسار ليتناسب مع الصورة (الرجوع لمجلد src)
-import "@/globals.css";
+import { Geist, Geist_Mono } from "next/font/google";
+import "../globals.css"; // تم تعديل المسار ليتناسب مع الصورة (الرجوع لمجلد src)
+
 import { Toaster } from 'react-hot-toast';
 import Navbar from "../components/Navbar";
 // استيراد الـ AuthProvider من المجلد الذي أنشأته
