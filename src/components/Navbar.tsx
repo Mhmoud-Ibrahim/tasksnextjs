@@ -129,7 +129,11 @@ export default function Navbar() {
             <motion.div initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} className="fixed top-0 left-0 bottom-0 w-72 bg-white shadow-2xl z-70 md:hidden p-6 pt-24">
               {isLoggedIn && (
                 <div className="flex items-center gap-3 mb-8 p-4 bg-slate-50 rounded-2xl">
-                  <img src={user?.userImage || 'https://ui-avatars.com' + user?.name} className="w-12 h-12 rounded-full border-2 border-white shadow-sm" alt="Profile" />
+                  <img src={user?.userImage}
+                  loading="lazy"
+                  alt="Profile"
+                  referrerPolicy="no-referrer"
+                  className="w-12 h-12 rounded-full border-2 border-white shadow-sm" alt="Profile" />
                   <div className="overflow-hidden">
                     <p className="font-bold text-slate-800 truncate">{user?.name}</p>
                     <p className="text-xs text-slate-500">Active Account</p>
