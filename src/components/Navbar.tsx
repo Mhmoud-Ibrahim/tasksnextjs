@@ -2,28 +2,32 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Cookies from 'js-cookie';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
-  const router = useRouter();
   const pathname = usePathname();
+  const { user, logout, loading } = useAuth(); // جلب البيانات من الكونتكست
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // قائمة المستخدم المصغرة
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
+  // التأكد من أن المكون تم تحميله في المتصفح لمنع أخطاء الهيدريشن
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     setIsMenuOpen(false);
     setIsUserMenuOpen(false);
   }, [pathname]);
 
-const { user, logout } = useAuth();
+  // متغير مساعد للتأكد من حالة تسجيل الدخول
+  const isLoggedIn = !!user;
 
+  // إذا لم يتم التحميل بعد، نعرض ناف بار فارغ بنفس الارتفاع للحفاظ على التنسيق
   if (!mounted) return <div className="h-20 bg-white border-b border-slate-100" />;
 
   return (
@@ -31,19 +35,28 @@ const { user, logout } = useAuth();
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100 px-4 md:px-6 py-4 shadow-sm">
         <div className="max-w-7xl mx-auto flex justify-between items-center gap-4">
           
+          {/* الجانب الأيسر: اللوجو وزر الموبايل */}
           <div className="flex items-center gap-4">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 md:hidden text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)} 
+              className="p-2 md:hidden text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+            >
               <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                {isMenuOpen ? <line x1="18" y1="6" x2="6" y2="18" /> : <line x1="3" y1="12" x2="21" y2="12" />}
-                {!isMenuOpen && <line x1="3" y1="6" x2="21" y2="6" />}
-                {!isMenuOpen && <line x1="3" y1="18" x2="21" y2="18" />}
+                {isMenuOpen ? <line x1="18" y1="6" x2="6" y2="18" /> : (
+                  <>
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                  </>
+                )}
               </svg>
             </button>
-            <Link href="/" className="text-lg md:text-2xl font-bold  bg-linear-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent shrink-0">
+            <Link href="/" className="text-lg md:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent shrink-0">
               Tasks
             </Link>
           </div>
 
+          {/* روابط التنقل (شاشات كبيرة) */}
           <div className="hidden md:flex items-center gap-8">
             <NavLink href="/" active={pathname === '/'}>Home</NavLink>
             {isLoggedIn && (
@@ -54,6 +67,7 @@ const { user, logout } = useAuth();
             )}
           </div>
 
+          {/* الجانب الأيمن: أزرار الدخول أو بروفايل المستخدم */}
           <div className="flex items-center gap-3">
             <AnimatePresence mode="wait">
               {!isLoggedIn ? (
@@ -63,21 +77,21 @@ const { user, logout } = useAuth();
                 </motion.div>
               ) : (
                 <div className="relative">
-                  {/* صورة المستخدم وزر القائمة المنسدلة */}
                   <button 
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                     className="flex items-center gap-2 p-1 hover:bg-slate-100 rounded-full transition-all"
                   >
-                    {user? <img 
-                      src={user?.userImage || 'https://flaticon.com'} 
+                    <img 
+                      src={user?.userImage || 'https://ui-avatars.com' + user?.name} 
                       alt="User" 
                       className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-indigo-100 object-cover"
-                    />:""}
-                   
-                    <svg className={`w-4 h-4 text-slate-500 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                    />
+                    <svg className={`w-4 h-4 text-slate-500 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
                   </button>
 
-                  {/* القائمة المنسدلة للمستخدم */}
+                  {/* القائمة المنسدلة */}
                   <AnimatePresence>
                     {isUserMenuOpen && (
                       <motion.div 
@@ -88,7 +102,7 @@ const { user, logout } = useAuth();
                       >
                         <div className="px-4 py-2 border-b border-slate-50 mb-1">
                           <p className="text-xs text-slate-400">Welcome,</p>
-                          <p className="text-sm font-bold text-slate-700 truncate">{user?.name || 'User'}</p>
+                          <p className="text-sm font-bold text-slate-700 truncate">{user?.name}</p>
                         </div>
                         <button 
                           onClick={logout}
@@ -107,28 +121,30 @@ const { user, logout } = useAuth();
         </div>
       </nav>
 
-      {/* القائمة الجانبية للموبايل (معدلة لتشمل صورة المستخدم) */}
+      {/* موبايل منيو */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsMenuOpen(false)} className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-60 md:hidden" />
-            <motion.div initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} className="fixed top-0 left-0 bottom-0 w-70 bg-white shadow-2xl z-70 md:hidden p-6 pt-24">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsMenuOpen(false)} className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-[60] md:hidden" />
+            <motion.div initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} className="fixed top-0 left-0 bottom-0 w-72 bg-white shadow-2xl z-[70] md:hidden p-6 pt-24">
               {isLoggedIn && (
                 <div className="flex items-center gap-3 mb-8 p-4 bg-slate-50 rounded-2xl">
-                  <img src={user?.userImage || 'https://flaticon.com'} className="w-12 h-12 rounded-full border-2 border-white shadow-sm" alt="Profile" />
-                  <div>
-                    <p className="font-bold text-slate-800">{user?.name}</p>
+                  <img src={user?.userImage || 'https://ui-avatars.com' + user?.name} className="w-12 h-12 rounded-full border-2 border-white shadow-sm" alt="Profile" />
+                  <div className="overflow-hidden">
+                    <p className="font-bold text-slate-800 truncate">{user?.name}</p>
                     <p className="text-xs text-slate-500">Active Account</p>
                   </div>
                 </div>
               )}
               <div className="flex flex-col gap-6">
-                <Link href="/" className="text-lg font-bold text-slate-600">Home</Link>
+                <Link href="/" className={`text-lg font-bold ${pathname === '/' ? 'text-indigo-600' : 'text-slate-600'}`}>Home</Link>
                 {isLoggedIn && (
                   <>
-                    <Link href="/tasks" className="text-lg font-bold text-slate-600">Tasks</Link>
-                    <Link href="/addTask" className="text-lg font-bold text-slate-600">Add Task</Link>
-                    <button onClick={logout} className="text-lg font-bold text-red-500 text-left mt-4">Logout</button>
+                    <Link href="/tasks" className={`text-lg font-bold ${pathname === '/tasks' ? 'text-indigo-600' : 'text-slate-600'}`}>Tasks</Link>
+                    <Link href="/addTask" className={`text-lg font-bold ${pathname === '/addTask' ? 'text-indigo-600' : 'text-slate-600'}`}>Add Task</Link>
+                    <button onClick={logout} className="text-lg font-bold text-red-500 text-left mt-4 flex items-center gap-2">
+                       Logout
+                    </button>
                   </>
                 )}
               </div>
